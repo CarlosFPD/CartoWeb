@@ -1,5 +1,7 @@
 let btn = document.getElementById('mbGuardar');
 let zme = document.getElementById('ZonaMensajeError');
+let fmo = document.getElementById('mbFormulario');
+let mdl = document.getElementById('staticBackdrop');
 btn.addEventListener('click',procesarFormatulario );
 
 
@@ -27,6 +29,13 @@ function procesarFormatulario() {
     alerta('La URL es obligatoria', 'success');  
     bandera=0;
   }
+
+  if (bandera==1)
+  {
+    alert('Parametros guardados exitosamente');
+    fmo.clear;
+    mdl.toggle;
+  } 
    
 }
 

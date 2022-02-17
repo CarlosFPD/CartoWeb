@@ -14,9 +14,14 @@ const loadCapAbilities = async () => {
 // loadCapAbilities();
 
 const paintCapAbilities = async (vector_layers) => {
-  
-  let layers = [];
-  
+    // lista de layers administrativos
+    const administrativos = ['departamento', 'municipio', 'localidad', 'barrios'];
+    
+    let layers = []; //<-- capas de negocios para pintar
+    let layers_admin = []; //<-- capas administrativas para pintar
+    let source;
+    let layer;
+    
 
 
   for (i = 0; i < vector_layers.length; i++) {
@@ -26,30 +31,72 @@ const paintCapAbilities = async (vector_layers) => {
     let style_layer;
 
     switch(id){
-      case 'apoyos':
-          style_layer = style_apoyos;
+        case 'apoyos':
+            style_layer = style_apoyos;
+            break;
+        case 'tramobt':
+            style_layer = style_tramobt;
+            break;
+        case 'tramomt':
+            style_layer = style_tramomt;
+            break;
+        case 'trafos':
+                style_layer = style_trafo;
+                break;   
+        case 'clientes':
+                style_layer = estilosCliente;
+                break;          
+        case 'subestacion':
+                style_layer = style_subestacion;
+                break;
+        case 'acometidas':
+                style_layer = estiloAcometida;
+                break; 
+    }
+
+    if (administrativos.includes(id)) {
+
+// Hacer lo mismo que esta en las lineas de la 31 a la 47 para asignar el estilo y quito el comentario de la linea 63  
+    switch(id){
+      case 'departamento':
+          style_layer = style_departamento;
           break;
-    //   case 'tramobt':
-    //       style_layer = style_ap_linea;
-    //       break;
-    //   case 'tramomt':
-    //       style_layer = style_ap_linea;
-    //       break;
-      case 'trafos':
-          style_layer = style_trafo;
+      case 'municipio':
+          style_layer = style_municipio;
+          break;
+      case 'localidad':
+          style_layer = style_localidad;
           break;   
-      case 'clientes':
-          style_layer = estilosCliente;
+      case 'barrios':
+          style_layer = style_barrio;
           break;          
     }
 
-    if(id !== 'departamento'){
-        let source = new ol.source.VectorTile({
+      source = new ol.source.VectorTile({
         url: vector_layers[i].tiles[0],
-            format: new ol.format.MVT(),
-        });
+        format: new ol.format.MVT(),
+      });
 
-      let layer = new ol.layer.VectorTile({
+      layer = new ol.layer.VectorTile({
+        name: vector_layers[i].name,
+        source: source,
+        minZoom: parseInt(vector_layers[i].minzoom) + 1,
+        maxZoom: vector_layers[i].maxzoom,
+        style: style_layer,
+        visible: false,
+      });
+
+      layers_admin.push(layer);
+
+    } else {
+
+      
+      source = new ol.source.VectorTile({
+        url: vector_layers[i].tiles[0],
+        format: new ol.format.MVT(),
+      });
+
+      layer = new ol.layer.VectorTile({
         name: vector_layers[i].name,
         source: source,
         minZoom: parseInt(vector_layers[i].minzoom) + 1,
@@ -58,6 +105,7 @@ const paintCapAbilities = async (vector_layers) => {
       });
 
       layers.push(layer);
+      
 
     }   
   }
@@ -67,7 +115,14 @@ const paintCapAbilities = async (vector_layers) => {
     title: 'Capas Base',
     layers: layers
   })
+
+  // GRUPOS DE CAPAS
+  grupo_capas_admin =  new ol.layer.Group({
+    title: 'Capas Administrativas',
+    layers: layers_admin
+  })
     
+    map.addLayer(grupo_capas_admin);
     map.addLayer(grupo_capas);
 }
 

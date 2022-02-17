@@ -48,7 +48,6 @@ function createTableString(table_header, table_body) {
 }
 
 
-
 function createRow(key, value) {
     return `<tr><td>${key}</td><td>${value?value : '--'}</td></tr>`;
 }
@@ -137,9 +136,15 @@ const createTableClientes = async (properties) => {
             }
                 
         }); 
-    
+}
 
-   
+function createTableClientes(properties) {
+    const keys = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
+    let innerHTML = `<tr><th>Propiedad</th><th>Valor</th></tr>`;
+    keys.forEach(key => {
+        innerHTML += createRow(key, key);
+    });
+    return '<table id="propiedades">' + innerHTML + '</table>'
 }
 
 function decodeTableClientes(properties) {
@@ -175,17 +180,7 @@ function switchEvent(properties) {
         container_content.innerHTML = createTableTrafo(properties);
         return;
     } else if (properties.hasOwnProperty('geohash')) {
-        // console.log('cliente');
-        // hidePopUp();
-        // container_content.innerHTML = '';
-        // MostrarModal(properties);
         createTableClientes(properties);
-        //console.log(properties);
-        // container_content.innerHTML = createTableClientes(properties);
-        // new basictable('#table-container-breakpoint', {
-        //     containerBreakpoint: 578,
-        //     tableWrap: true,
-        // });
         return;
     } else if (properties.hasOwnProperty('fnap')) {
         // console.log('tramobt');
@@ -222,8 +217,6 @@ const pulseFeature =  async(coord) => {
         layerFilter: onlyLayerFilter,
         hitTolerance: 15
     });
-
-    
 
     if (features.length == 0) {
         return;

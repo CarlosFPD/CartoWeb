@@ -71,7 +71,7 @@ table tr:nth-of-type(2n+2) td {
 }
 
 table.bt tbody td {
-  font-size: .65rem;
+  font-size: .8125rem;
   padding: 0;
 }
 

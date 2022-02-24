@@ -97,6 +97,15 @@ function createTableSubestacion(properties) {
     return '<table class="propiedades">' + innerHTML + '</table>'
 }
 
+function createTableSubestacion(properties) {
+    const keys = ['codigosub', 'nombresub', 'niveltension'];
+    let innerHTML = `<tr><th>Propiedad</th><th>Valor</th></tr>`;
+    keys.forEach(key => {
+        innerHTML += createRow(key, properties[key]);
+    });
+    return '<table class="propiedades">' + innerHTML + '</table>'
+}
+
 const createTableClientes = async (properties) => {
     let clientes = null;
     container_content.innerHTML = `<div class="spinner"></div>`;

@@ -345,21 +345,7 @@ let estiloAcometida = new ol.style.Style({
 });
 
 
-// CAPAS
-// ---------------------------------------------------------------------------------------------------------------------
-// SOURCES
-//let source_Apoyos = new ol.source.VectorTile({
-//    format: new ol.format.MVT(),
-//    url: tiles_server + capa_apoyos,
-//})
-
-//let source_Clientes = new ol.source.VectorTile({
-//    format: new ol.format.MVT(),
-//    url: tiles_server + capa_clientes,
-//});
-
-
-/// FIN ESTILOS ---------------------------------------------------------------------------------------
+// FIN ESTILOS ---------------------------------------------------------------------------------------
 
 
 

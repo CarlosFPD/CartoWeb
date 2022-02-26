@@ -12,7 +12,7 @@ let rotation = 0;
 
 
 if (!!sessionStorage.getItem('hash')) {
-    console.log('sessionStorage.getItem("hash")');
+    // console.log('sessionStorage.getItem("hash")');
     let hash = sessionStorage.getItem('hash').replace('#map=', '');
     const parts = hash.split('/');
     if (parts.length === 4) {

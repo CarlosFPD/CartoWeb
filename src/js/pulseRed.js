@@ -98,22 +98,35 @@ const createTableClientes = async (properties) => {
         .then(response => {
             clientes = response.data;
         }).then(function () {
+            if (clientes.length > 0) {
+
+            
             const headerArr = Object.keys(clientes[0]);
             const header_str = createTableHeaderString(headerArr);
             const body_str = createTableBodyString(clientes);
             container_content.innerHTML = createTableString(header_str, body_str);
-
-
+            } else { 
+                throw new Error(` no cliente en ${properties['long']}, ${properties['lat']}`)
+                return false;
+            }
 
         })
-        .catch(function(error) { console.log(error); /* esta línea podría arrojar error, e.g. cuando console = {} */ })
+        .catch(function (error) {
+            console.log(error); /* esta línea podría arrojar error, e.g. cuando console = {} */
+            isLoading = false;
+        })
         .finally(function () {
             isLoading = false;
-            const table_cliente = new basictable('#table-container-breakpoint', {
-                containerBreakpoint: 578,
-                tableWrap: true,
-            });
-            table_cliente.start();
+            if (clientes.length > 0) {
+                const table_cliente = new basictable('#table-container-breakpoint', {
+                    containerBreakpoint: 578,
+                    tableWrap: true,
+                });
+                    table_cliente.start();
+            } else { 
+                container_content.innerHTML = 'Sin Datos';
+            }
+                
         }); 
     
 
@@ -198,7 +211,7 @@ function switchEvent(properties) {
         //     tableWrap: true,
         // });
         return;
-    } else if (properties.hasOwnProperty('fnap')) {
+    } else if (properties.hasOwnProperty('fnapd')) {
         // console.log('tramobt');
         container_content.innerHTML = createTableTramobt(properties);
         return;
@@ -208,7 +221,7 @@ function switchEvent(properties) {
         return;
     }else {
         console.log('no se encontro propiedad');
-        container_content.innerHTML = '';
+        container_content.innerHTML = JSON.stringify(properties);
         // hidePopUp();
         return;
     }
@@ -217,7 +230,7 @@ function switchEvent(properties) {
 
 // SOLO LOS LAYERS QUE RETORNEN TRUE SERAN ATENDIDOS EN EL PULSE CLICK
 function onlyLayerFilter(layer) {
-    const list_layers = ['apoyos', 'clientes', 'trafos', 'subestacion'];
+    const list_layers = ['apoyos', 'clientes', 'trafos', 'subestacion', 'tramobt'];
     return list_layers.includes(layer.get('name'));
 }
 

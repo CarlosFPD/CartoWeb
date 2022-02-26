@@ -250,14 +250,22 @@ function eval_color_by_tension(context) {
     //varios circuitos
     var feature = context.feature;
     var color = '';
-    var expr;
-    if (feature.hasOwnProperty('circuito')){
-        expr = feature.get('color')
-    }else{
-       expr = feature.get('color')
+    var expr = feature.get('color');
+    if (!expr){
+        expr = '#000000';
     }
     color = codigo_energis(expr);
 
+    return color;
+}
+
+function eval_color_by_circuitoBt(context) {
+    var feature = context.feature;
+    var color = '#' + feature.get('color');
+    if(color === '#'){
+        color = '#000000';
+    }
+    
     return color;
 }
 
@@ -268,8 +276,21 @@ var style_tramomt = function(feature, resolution){
     };
     return [ new ol.style.Style({
             stroke: new ol.style.Stroke({
-                width:  resolution > 10 ? 1.5 : 3.5,
+                width:  resolution > 10 ? 2.0 : 3.0,
                 color : eval_color_by_tension(context)
+            })
+        })]; 
+}; 
+
+var style_tramobt = function(feature, resolution){
+    var context = {
+        feature: feature,
+        variables: {} 
+    };
+    return [ new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                width:  resolution > 10 ? 1.0 : 1.5,
+                color : eval_color_by_circuitoBt(context)
             })
         })]; 
 }; 

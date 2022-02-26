@@ -34,9 +34,9 @@ const paintCapAbilities = async (vector_layers) => {
         case 'apoyos':
             style_layer = style_apoyos;
             break;
-        //   case 'tramobt':
-        //       style_layer = style_ap_linea;
-        //       break;
+        case 'tramobt':
+            style_layer = style_tramobt;
+            break;
         case 'tramomt':
             style_layer = style_tramomt;
             break;
@@ -70,7 +70,7 @@ const paintCapAbilities = async (vector_layers) => {
       case 'barrios':
           style_layer = style_barrio;
           break;          
-}
+    }
 
       source = new ol.source.VectorTile({
         url: vector_layers[i].tiles[0],

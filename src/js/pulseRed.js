@@ -71,8 +71,17 @@ function createTableTramobt(properties) {
     return '<table class="propiedades">' + innerHTML + '</table>'
 }
 
+function createTableTramomt(properties) {
+    const keys = ['circuito'];
+    let innerHTML = `<tr><th>Propiedad</th><th>Valor</th></tr>`;
+    keys.forEach(key => {
+        innerHTML += createRow(key, properties[key]);
+    });
+    return '<table class="propiedades">' + innerHTML + '</table>'
+}
+
 function createTableTrafo(properties) {
-    const keys = ['codigoapoyo', 'cantidadtrafos', 'codigotrafodis', 'pintadotrafodis'];
+    const keys = ['codigoapoyo', 'pintadoapoyo', 'codigotrafodis', 'pintadotrafodis','potencia', 'cantidadtrafos'];
     let innerHTML = `<tr><th>Propiedad</th><th>Valor</th></tr>`;
     keys.forEach(key => {
         innerHTML += createRow(key, properties[key]);
@@ -81,7 +90,7 @@ function createTableTrafo(properties) {
 }
 
 function createTableSubestacion(properties) {
-    const keys = ['codigosub', 'nombresub', 'niveltension'];
+    const keys = ['codigosub', 'nombresub', 'niveltension', 'areasubestacion'];
     let innerHTML = `<tr><th>Propiedad</th><th>Valor</th></tr>`;
     keys.forEach(key => {
         innerHTML += createRow(key, properties[key]);
@@ -153,39 +162,6 @@ const showPopUp = () => {
 }
 
 
-const MostrarModal = async (properties) => {
-    // antiguo MostrarModal
-    // if (document.getElementById('costumer').classList.contains('active')) {
-    // } else {
-    //     element = document.getElementById("costumer").classList.remove("disabled");
-    //     document.getElementById('costumer_a').click();
-    // }
-    // document.getElementById("costumers_tbody").innerHTML = "";
-
-
-    const apiClient = new ApiClient(backend_url, x_api_key);
-    // let token = sessionStorage.getItem('token');
-    // if (!token) {
-        token = await apiClient.getToken();
-        // sessionStorage.setItem('token', token.data.token);
-    // }
-    // console.log(token);
-    // sessionStorage.setItem('token', token.data.token);
-    // apiClient.setToken(token);
-    apiClient.getClientes(properties['long'], properties['lat']).then(response => {
-        const clientes = response.data;
-        console.log(response.data);
-        // for (var i = 0; i < clientes.length; i++) {
-        //     //console.log(clientes[i]);
-        //     let tr = document.createElement('tr');
-        //     tr.innerHTML = `<td>${clientes[i]['CODIGOCLIENTESGD']}</td><td>${clientes[i]['NOMBRESUSCRIPTOR']}</td><td>${clientes[i]['NOMBRESUSCRIPTOR']}</td>`;
-        //     document.getElementById("costumers_tbody").appendChild(tr);
-        // }
-
-    });
-
-
-}
 // EVENTO SEGUN EL TIPO DE CAPAS
 function switchEvent(properties) {
     //check if properties object has a property called 'apoyo'
@@ -211,9 +187,13 @@ function switchEvent(properties) {
         //     tableWrap: true,
         // });
         return;
-    } else if (properties.hasOwnProperty('fnapd')) {
+    } else if (properties.hasOwnProperty('fnap')) {
         // console.log('tramobt');
         container_content.innerHTML = createTableTramobt(properties);
+        return;
+    } else if (properties.hasOwnProperty('circuito')) {
+        // console.log('tramobt');
+        container_content.innerHTML = createTableTramomt(properties);
         return;
     }  else if (properties.hasOwnProperty('codigosub')) {
         console.log('subestacion');
@@ -230,7 +210,7 @@ function switchEvent(properties) {
 
 // SOLO LOS LAYERS QUE RETORNEN TRUE SERAN ATENDIDOS EN EL PULSE CLICK
 function onlyLayerFilter(layer) {
-    const list_layers = ['apoyos', 'clientes', 'trafos', 'subestacion', 'tramobt'];
+    const list_layers = ['apoyos', 'clientes', 'trafos', 'subestacion', 'tramobt', 'tramomt'];
     return list_layers.includes(layer.get('name'));
 }
 
@@ -261,8 +241,6 @@ const pulseFeature =  async(coord) => {
     switchEvent(properties);   /// <--- CODIFICAR LOS DATOS DE LAS PROPIEDADES SEGUN LA CAPA
     // content.innerHTML = createTable(properties);
     overlay.setPosition(closest_coordinates);
-
-
 
 
     var f = new ol.Feature(new ol.geom.Point(closest_coordinates));

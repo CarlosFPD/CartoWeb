@@ -98,7 +98,7 @@ function createTableSubestacion(properties) {
 }
 
 function createTableSubestacion(properties) {
-    const keys = ['codigosub', 'nombresub', 'niveltension'];
+    const keys = ['codigosub', 'nombresub', 'niveltension', 'areasubestacion'];
     let innerHTML = `<tr><th>Propiedad</th><th>Valor</th></tr>`;
     keys.forEach(key => {
         innerHTML += createRow(key, properties[key]);

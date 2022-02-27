@@ -7,7 +7,10 @@ const loadCapAbilities = async () => {
     fetch(tiles_server + "capabilities/essa.json", { method: 'GET' })
     .then(response => response.json())
     .then(result => paintCapAbilities(result.vector_layers))
-    .catch(error => console.log('error', error));
+      .catch(error => {
+        alert('Error al conectar el servidor de capas '+tiles_server);
+        console.log('error', error)
+      });
     
 }
 

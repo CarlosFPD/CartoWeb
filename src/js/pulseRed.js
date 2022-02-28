@@ -106,12 +106,55 @@ function createTableSubestacion(properties) {
     return '<table class="propiedades">' + innerHTML + '</table>'
 }
 
+// const createTableClientes = async (properties) => {
+//     let clientes = null;
+//     container_content.innerHTML = `<div class="spinner"></div>`;
+//     const apiClient = new ApiClient(backend_url, x_api_key);
+//     const token = await apiClient.getToken();
+//     apiClient.getClientes(properties['long'], properties['lat'])
+//         .then(response => {
+//             clientes = response.data;
+//         }).then(function () {
+//             if (clientes.length > 0) {
+
+            
+//             const headerArr = Object.keys(clientes[0]);
+//             const header_str = createTableHeaderString(headerArr);
+//             const body_str = createTableBodyString(clientes);
+//             container_content.innerHTML = createTableString(header_str, body_str);
+//             } else { 
+//                 throw new Error(` no cliente en ${properties['long']}, ${properties['lat']}`)
+//                 return false;
+//             }
+
+//         })
+//         .catch(function (error) {
+//             console.log(error); /* esta línea podría arrojar error, e.g. cuando console = {} */
+//             isLoading = false;
+//         })
+//         .finally(function () {
+//             isLoading = false;
+//             if (clientes.length > 0) {
+//                 const table_cliente = new basictable('#table-container-breakpoint', {
+//                     containerBreakpoint: 578,
+//                     tableWrap: true,
+//                 });
+//                     table_cliente.start();
+//             } else { 
+//                 container_content.innerHTML = 'Sin Datos';
+//             }
+                
+//         }); 
+// }
+
 const createTableClientes = async (properties) => {
     let clientes = null;
     container_content.innerHTML = `<div class="spinner"></div>`;
     const apiClient = new ApiClient(backend_url, x_api_key);
     const token = await apiClient.getToken();
-    apiClient.getClientes(properties['long'], properties['lat'])
+    let geohash = properties['geohash']
+    geohash = geohash.slice(0, -4);
+    apiClient.getClientesByGeohash(geohash)
         .then(response => {
             clientes = response.data;
         }).then(function () {
@@ -123,7 +166,7 @@ const createTableClientes = async (properties) => {
             const body_str = createTableBodyString(clientes);
             container_content.innerHTML = createTableString(header_str, body_str);
             } else { 
-                throw new Error(` no cliente en ${properties['long']}, ${properties['lat']}`)
+                throw new Error(` no cliente en ${properties['geohash']}`)
                 return false;
             }
 

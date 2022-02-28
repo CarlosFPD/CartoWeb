@@ -89,6 +89,17 @@ class ApiClient {
 
     }
 
+    async getClientesByGeohash(geohash) {
+        const url = this.url + `/api/clientes/geohash?geohash=${geohash}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: this.myHeaders
+        });
+        const clientes = await response.json();
+        return clientes;
+
+    }
+
     async getBusquedaCapaNegocio(entidad, codigo, tipocodigo) {
         const url = this.url + `/api/consultas/busquedaCapaNegocio?entidad=${entidad}&codigo=${codigo}&tipocodigo=${tipocodigo}`;
         const response = await fetch(url, {
